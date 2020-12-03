@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch06.dao.UserDao">
+    <resultMap id="userMap" type="edu.nf.ch06.entity.Users">
+        <id property="uid" column="u_id"/>
+        <result property="userName" column="u_name"/>
+        <result property="age" column="age"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+
+    <!--动态条件查询（使用if来拼接条件，适用于一个或多个条件）-->
+    <select id="listUsers" parameterType="users" resultMap="userMap">
+        select u_id,u_name,age,tel from user_info2
+        <!--userName对应实体类中的字段-->
+        <where>
+            <if test="userName != null and userName != ''">
+                u_name = #{userName}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
+
+    <!--choose,多选一-->
+    <select id="listUsers2" parameterType="users" resultMap="userMap">
+        select u_id,u_name,age,tel from user_info2
+        <choose>
+            <when test="userName != null and userName !=''">
+                where u_name = #{userName}
+            </when>
+            <when test="age != null and age != ''">
+                where age = #{age}
+            </when>
+            <otherwise>
+                order by u_id desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--动态条件范围查询（使用foreah，适用于in或者or语句）
+        当方法参数是一个数组的时候，parameterType就必须指定为collection
+        表达式中用array变量来操数组-->
+    <select id="listUsers3" parameterType="collection" resultMap="userMap">
+        select u_id,u_name,age,tel from user_info2
+        <where>
+            u_id in
+            <if test="array != null">
+            <!--这里的id是给循环出来的值起一个别名-->
+                <foreach collection="array" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <!--动态更新-->
+    <update id="update" parameterType="users">
+        update user_info2
+        <!--suffixOverrides告诉idea将最后一个更新字段逗号替换成suffix指定的空格符，suffix默认是空格-->
+        <trim prefix="set" suffixOverrides="," suffix="">
+            <if test="userName != null and userName != ''">
+                u_name = #{userName},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+        </trim>
+        <where>
+            u_id = #{uid}
+        </where>
+    </update>
+</mapper>

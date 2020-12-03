@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch08.dao.StuDao">
+
+    <!--stuMapper-->
+    <resultMap id="stuMap" type="edu.nf.ch08.entity.Student">
+        <id property="stuId" column="stu_id"/>
+        <result property="stuName" column="stu_name"/>
+        <result property="stuAge" column="stu_age"/>
+        <!--关联身份证，（一对一）,
+            resultMap属性引用下面的身份证的resultMap的id-->
+        <association property="idCard" resultMap="cardMap"/>
+        <!--关联班级，多对一 -->
+        <association property="classInfo" resultMap="classMap"/>
+        <!--关联课程，多对多--><!--一对多也用collection-->
+        <collection property="subjects" resultMap="subMap"/>
+    </resultMap>
+
+    <!--配置身份证的mapper-->
+    <resultMap id="cardMap" type="edu.nf.ch08.entity.IdCard">
+        <id property="cardId" column="card_id"/>
+        <result property="cardNum" column="card_num"/>
+    </resultMap>
+
+    <resultMap id="classMap" type="edu.nf.ch08.entity.ClassInfo">
+        <id property="cid" column="c_id"/>
+        <result property="className" column="c_name"/>
+    </resultMap>
+
+    <resultMap id="subMap" type="edu.nf.ch08.entity.Subject">
+        <id property="subId" column="sub_id"/>
+        <result property="subName" column="sub_name"/>
+    </resultMap>
+
+    <!--配置班级的mapper-->
+    <select id="getStudentById" resultMap="stuMap" parameterType="int">
+        select stu.stu_id, stu.stu_name, stu.stu_age, card.card_num, cla.c_name
+        from student_info stu join card_info card on stu.stu_id = card.stu_id
+        join class_info cla on cla.c_id = stu.c_id
+        where stu.stu_id = #{id}
+    </select>
+
+    <select id="getStudentById2" resultMap="stuMap" parameterType="int">
+        select * from student_info s join
+        stu_sub ss on s.stu_id = ss.stu_id join
+        subject_info sub on ss.sub_id = sub.sub_id
+        where s.stu_id = #{id}
+    </select>
+
+    <select id="listStu" resultMap="stuMap">
+        select * from student_info s join class_info c on s.c_id = c.c_id
+        join card_info card on card.stu_id = s.stu_id
+    </select>
+
+</mapper>

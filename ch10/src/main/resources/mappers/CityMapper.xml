@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch10.dao.CityDao">
+    <!-- cityMap -->
+    <resultMap id="cityMap" type="edu.nf.ch10.entity.City">
+        <id property="id" column="city_id"/>
+        <result property="name" column="city_name"/>
+        <result property="code" column="city_code"/>
+        <result property="province" column="province"/>
+    </resultMap>
+    <!-- 分页查询, dao中的分页参数不需要设置，由插件动态配置 -->
+    <select id="listCity" resultMap="cityMap">
+        select city_id, city_name, city_code, province from city_info
+    </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch04.dao.UserDao">
+    <!--id给resultMap定义一个唯一标识，type对应映射的实体类型-->
+    <resultMap id="userMap" type="users">
+        <!--property指定实体的字段名，column指定表的列名-->
+        <id property="uid" column="u_id"/>
+        <!--映射其他字段,其他都用result标签来映射-->
+        <result property="userName" column="u_name"/>
+    </resultMap>
+    <!--根据id查询用户的信息，使用resultMap属性，引用上边配置的resultMap的id，使用result就无须起别名-->
+    <select id="getUserById" parameterType="int" resultMap="userMap">
+        select u_id,u_name from user_info where u_id = #{id}
+    </select>
+
+    <select id="listUser" resultMap="userMap">
+        select u_id,u_name from user_info
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from user_info
+    </select>
+
+    <select id="like" parameterType="string" resultMap="userMap">
+        select u_id,u_name from user_info where u_name like #{userName}"%"
+    </select>
+</mapper>

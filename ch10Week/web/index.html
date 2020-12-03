@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/pagination.css"/>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/jquery.pagination.js"></script>
+</head>
+<body>
+<div class="container">
+<h2>城市列表</h2>
+    <form id="fmSel">
+        城市：<input type="text" id="province" name="province"/>
+        <input id="selBtn" type="button" value="查询"/>
+    </form>
+<table id="tab" class="table table-bordered table-hover table-condensed">
+    <tr>
+        <th>城市ID</th>
+        <th>城市名</th>
+        <th>编号</th>
+        <th>省份</th>
+    </tr>
+</table>
+<!-- 这个div用于初始化分页控件 -->
+<div id="page"></div>
+</div>
+
+    <script>
+        //渲染表格
+        function addTable(cityList){
+            $('#tab tr:not(:first)').remove();
+            $.each(cityList.list, function(index, obj){
+                $('#tab').append(
+                    '<tr>'+
+                    '<td>'+obj.cityId+'</td>'+
+                    '<td>'+obj.cityName+'</td>'+
+                    '<td>'+obj.cityCode+'</td>'+
+                    '<td>'+obj.province+'</td>'+
+                    '</tr>'
+                );
+            });
+        }
+        function page(pageInfo){
+            $("#page").pagination(pageInfo.total, { //第一个参数指定共多少条记录
+                items_per_page:pageInfo.pageSize, // 每页显示多少条记录
+                next_text:">", //下一页按钮图标
+                prev_text:"<", //上一页按钮图标
+                num_display_entries:5,//主体页数
+                num_edge_entries: 2, //边缘页数
+                callback: function(index){//定义一个回调函数，用于每次点击页码发起分页查询请求
+                    //index为当前页码，只不过下标是从0开始，因此需要+1操作
+                    var pageNum = ++index;
+                    var province = $('#province').val();
+                    $.ajax({
+                        url : 'listCityServlet',
+                        method : 'get',
+                        data : {'pageNum' : pageNum, 'pageSize' : 10, 'province': province},
+                        success : function(pageInfo){
+                            //渲染表格
+                            addTable(pageInfo);
+                        }
+                    });
+                }
+            });
+        }
+
+         $(function () {
+            //查询
+            $('#selBtn').on('click',function () {
+                var province = $('#province').val();
+                $.ajax({
+                    url:'listCityServlet',
+                    data:{'pageNum': 1, 'pageSize': 10, 'province': province},
+                    success:function (cityList) {
+                        addTable(cityList);
+                        page(cityList);
+                    }
+                });
+            });
+            //显示
+            $.ajax({
+                url: 'listCityServlet',
+                method: 'get',
+                data: {'pageNum': 1, 'pageSize': 10},
+                success:function (pageInfo) {
+                    addTable(pageInfo);
+                    page(pageInfo);
+                }
+            })
+        });
+    </script>
+</body>
+</html>

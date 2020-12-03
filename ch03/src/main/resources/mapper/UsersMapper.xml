@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch03.dao.UsersDao">
+    <!--查询单条记录，id对应方法，parameterType对应参数类型
+        resultType指定查询返回类型，这里引用实体别名，表示返回一个Users,
+        注意：sql中使用别名映射实体的字段名，这样查询的结果才会映射到对应的实体中-->
+    <select id="getUserById" parameterType="int" resultType="users">
+        select u_id as uid,u_name as userName from user_info where u_id = #{id}
+    </select>
+    <select id="getUserById2" parameterType="int" resultType="map">
+        select u_id,u_name from user_info where u_id = #{id}
+    </select>
+
+    <!--查询多条记录，返回的是一个List集合，集合中保存的是一个个的User实体,因此resultType只需要指定为实体中的别名-->
+    <select id="listUser" resultType="users">
+        select u_id as uid,u_name as userName from user_info
+    </select>
+
+    <!--u_id对应映射map集合的key-->
+    <select id="listUser2" resultType="map">
+        select u_id,u_name from user_info
+    </select>
+
+</mapper>

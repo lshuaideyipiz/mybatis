@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--控制台显示sql语句-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <!--实体别名-->
+    <typeAliases>
+        <package name="edu.nf.ch10Week.entity"/>
+    </typeAliases>
+    <!--配置mybatis的插件-->
+    <plugins>
+        <!-- 这里使用的是分页插件, 作用是拦截sql语句并生成对应的分页语句。
+             它会针对不同的数据库生成不同的分页语句-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!-- 配置分页插件的一些属性 -->
+            <!-- 配置数据库的方言，当前使用的数据库是mysql -->
+            <property name="helperDialect" value="mysql"/>
+            <!-- 启用注解参数分页支持-->
+            <property name="supportMethodsArguments" value="true"/>
+            <!-- 启用分页合理化，当pageNum<=0时，就设置为1,因为有的数据库第一条对应的编号是0，-->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/users?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mapper/CityMapper.xml"/>
+    </mappers>
+</configuration>

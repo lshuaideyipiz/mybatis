@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch06night.dao.UserDao">
+    <resultMap id="resultMap" type="edu.nf.ch06night.entity.Users">
+        <id property="uid" column="u_id"/>
+        <result property="userName" column="u_name"/>
+        <result property="age" column="age"/>
+        <result property="tel" column="tel"/>
+    </resultMap>
+
+    <select id="listUser" parameterType="users" resultMap="resultMap">
+        select u_id,u_name,age,tel from user_info2
+        <where>
+            <if test="userName != null and userName !=''">
+                u_name = #{userName}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="tel != null and tel != ''">
+                and tel = #{tel}
+            </if>
+        </where>
+    </select>
+    <select id="listUser2" resultMap="resultMap" parameterType="users">
+        select u_id,u_name,age,tel from user_info2
+        <choose>
+            <when test="userName != null and userName != ''">
+                where u_name = #{userName}
+            </when>
+            <when test="age != null">
+                where age = #{age}
+            </when>
+            <otherwise>
+                order by u_id desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="listUser3" parameterType="collection" resultMap="resultMap">
+        select u_id,u_name,age,tel from user_info2
+        <where>
+            u_id in
+            <if test="array != null">
+                <foreach collection="array" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="update" parameterType="users" >
+        update user_info2
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">
+                u_name = #{userName},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="tel != null and tel != ''">
+                tel = #{tel},
+            </if>
+        </trim>
+        <where>
+            u_id = #{uid}
+        </where>
+    </update>
+
+</mapper>

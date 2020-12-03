@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--mapper根节点的namespace指定Dao接口的完整类名，因为mybatis解析的时候需要根据这个来找到响应的dao中的方法来执行-->
+<mapper namespace="edu.nf.ch01night.dao.UserDao">
+
+    <insert id="save" parameterType="user">
+        insert into user_info(u_name) values(#{userName});
+    </insert>
+
+    <insert id="save2" parameterType="user" useGeneratedKeys="true" keyProperty="uid">
+        insert into user_info (u_name) values (#{userName});
+    </insert>
+
+</mapper>

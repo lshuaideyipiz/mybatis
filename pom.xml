@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>edu.nf</groupId>
+    <artifactId>mybatis_study</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>ch01</module>
+        <module>ch01_night</module>
+        <module>ch02</module>
+        <module>homeWork</module>
+        <module>ch03</module>
+        <module>ch04</module>
+        <module>ch04_night</module>
+        <module>ch06</module>
+        <module>ch06_night</module>
+        <module>ch07</module>
+        <module>ch08</module>
+        <module>ch08_night</module>
+        <module>ch08_night</module>
+        <module>ch08_night</module>
+        <module>ch08_night</module>
+        <module>ch09</module>
+        <module>ch10</module>
+        <module>ch10Week</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- 设置项目的编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 设置java的版本为1.8-->
+        <java.version>1.8</java.version>
+        <!-- 源码编译的版本为1.8-->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <!-- 目标字节码的版本为1.8-->
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- 指定编译器版本为1.8-->
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+    </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.6</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.47</version>
+        </dependency>
+
+        <!---->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+
+
+</project>

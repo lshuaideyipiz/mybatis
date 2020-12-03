@@ -1,0 +1,1 @@
+#基本查询，resultType使用

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.nf.ch02.dao.UserDao">
+    <!--1.自增长的主键策略
+        useGeneratedKeys设置为true表示为使用自增长主键
+        keyProperty表示实体当中的主键字段
+        这样当成功插入一条记录后，mybatis会自动将生成的主键映射到实体的主键字段中，方便后续使用0-->
+    <insert id="save" parameterType="users" useGeneratedKeys="true" keyProperty="uid">
+        insert into user_info(u_name) values (#{userName})
+    </insert>
+
+
+
+</mapper>

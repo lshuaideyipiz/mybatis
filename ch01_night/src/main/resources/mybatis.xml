@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <!--给实体目录下的所有实体类自动创建别名，别名为类名，首字母自动转换为小写-->
+        <package name="edu.nf.ch01night.entity"/>
+    </typeAliases>
+    <environments default="mysql">
+        <environment id="mysql">
+            <!--事务管理JDBC为mybatis使用本体Connection的JDBC事务，MANAGED:表示mybatis不参与事务管理，由第三方容器来管理事务-->
+            <transactionManager type="JDBC"/>
+            <!--配置数据源，type指定连接方式，POOLED表示使用mybatis自带的连接池，UNPOOLED表示不使用连接池，每次从充数据库获取新的连接-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis_study?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+        <!--这里还可以加别的数据库-->
+    </environments>
+
+    <mappers>
+        <mapper resource="mappers/UsersMapper.xml"/>
+        <mapper resource="mappers/StuMapper.xml"/>
+    </mappers>
+</configuration>

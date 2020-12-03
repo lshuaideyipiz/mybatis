@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/pagination.css"/>
+</head>
+<body>
+    <div class="container">
+        <h2>城市列表</h2>
+        <table id="tab" class="table table-bordered table-hover table-condensed">
+            <tr>
+                <th>城市ID</th>
+                <th>城市名</th>
+                <th>编号</th>
+                <th>省份</th>
+            </tr>
+        </table>
+        <!-- 这个div用于初始化分页控件 -->
+        <div id="page"></div>
+    </div>
+<script src="js/jquery-1.12.4.min.js"></script>
+<script src="js/jquery.pagination.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            url : 'list_city',
+            method : 'get',
+            data: {'pageNum' : 1, 'pageSize' : 10},
+            success : function(pageInfo){
+                //渲染表格
+                addTable(pageInfo.list);
+                //初始化分页控件
+                page(pageInfo);
+            }
+        });
+    })
+    //渲染表格
+    function addTable(dataList){
+        //清除原有数据
+        $('#tab tr:not(:first)').remove();
+        $.each(dataList, function(index, obj){
+            $('#tab').append(
+                '<tr>'+
+                    '<td>'+obj.id+'</td>'+
+                    '<td>'+obj.name+'</td>'+
+                    '<td>'+obj.code+'</td>'+
+                    '<td>'+obj.province+'</td>'+
+                 '</tr>'
+            );
+        });
+    }
+
+    //分页
+    function page(data){
+        $("#page").pagination(data.total, { //第一个参数指定共多少条记录
+            items_per_page:data.pageSize, // 每页显示多少条记录
+            next_text:">", //下一页按钮图标
+            prev_text:"<", //上一页按钮图标
+            num_display_entries:5,//主体页数
+            num_edge_entries: 2, //边缘页数
+            callback: function(index){//定义一个回调函数，用于每次点击页码发起分页查询请求
+                //index为当前页码，只不过下标是从0开始，因此需要+1操作
+                var pageNum = ++index;
+                $.ajax({
+                    url : 'list_city',
+                    method : 'get',
+                    data : {'pageNum' : pageNum, 'pageSize' : 10},
+                    success : function(pageInfo){
+                        //渲染表格
+                        addTable(pageInfo.list);
+                    }
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

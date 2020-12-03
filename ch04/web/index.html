@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
+
+            $.ajax({
+                url:'showList',
+                type:'get',
+                success:function (listJson) {
+                    $.each(listJson,function (index,value) {
+                        $('#tab').append("<tr>"+
+                            "<td>"+value.uid+"</td>"+
+                            " <td>"+value.userName+"</td>"+
+                            "</tr>")
+                    })
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <table id="tab">
+        <tr>
+            <th>u_id</th>
+            <th>u_name</th>
+        </tr>
+    </table>
+</body>
+</html>
